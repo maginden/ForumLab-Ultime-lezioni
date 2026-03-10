@@ -37,6 +37,8 @@ import {
   Star,
   HelpCircle,
   Moon,
+  Search,
+  X,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import NextImage from 'next/image';
@@ -793,7 +795,51 @@ export default function Presentation() {
   const [activeModule, setActiveModule] = useState<'piano' | 'pos'>('piano');
   const [isEditing, setIsEditing] = useState(false);
   const [data, setData] = useState<LessonData>(INITIAL_DATA);
+  const [notes, setNotes] = useState<Record<string, string>>({});
+
+  React.useEffect(() => {
+    const savedNotes = localStorage.getItem('lesson-notes');
+    if (savedNotes) setNotes(JSON.parse(savedNotes));
+  }, []);
+
+  const updateNote = (stepId: string, value: string) => {
+    const newNotes = { ...notes, [stepId]: value };
+    setNotes(newNotes);
+    localStorage.setItem('lesson-notes', JSON.stringify(newNotes));
+  };
   const [isExporting, setIsExporting] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [timer, setTimer] = useState(0);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const timerRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  React.useEffect(() => {
+    if (isTimerRunning) {
+      timerRef.current = setInterval(() => {
+        setTimer(prev => prev + 1);
+      }, 1000);
+    } else {
+      if (timerRef.current) clearInterval(timerRef.current);
+    }
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [isTimerRunning]);
+
+  const formatTime = (seconds: number) => {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return `${h > 0 ? h + ':' : ''}${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  };
+
+  const filteredSteps = searchQuery.trim() === '' 
+    ? [] 
+    : steps.filter(step => 
+        step.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        step.module.toLowerCase().includes(searchQuery.toLowerCase())
+      );
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null);
   const slideRef = React.useRef<HTMLDivElement>(null);
 
@@ -1326,6 +1372,32 @@ export default function Presentation() {
               <span className="hidden xl:inline text-xs font-bold">CARICA</span>
             </label>
           </div>
+
+          <button 
+            onClick={() => setIsSearchOpen(true)}
+            className="p-2 text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-all"
+            title="Cerca Slide"
+          >
+            <Search size={20} />
+          </button>
+
+          <button 
+            onClick={() => setIsTimerRunning(!isTimerRunning)}
+            onDoubleClick={() => {
+              setTimer(0);
+              setIsTimerRunning(false);
+            }}
+            className={cn(
+              "flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono font-bold transition-all",
+              isTimerRunning 
+                ? "bg-red-50 text-red-600 animate-pulse" 
+                : "bg-slate-100 text-slate-600"
+            )}
+            title="Timer (Click: Start/Stop, Double Click: Reset)"
+          >
+            <Clock size={14} />
+            {formatTime(timer)}
+          </button>
 
           <button 
             onClick={() => setIsEditing(!isEditing)}
@@ -3313,6 +3385,129 @@ export default function Presentation() {
           </button>
         </div>
       </footer>
+      {/* Search Overlay */}
+      <AnimatePresence>
+        {isSearchOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-slate-900/40 backdrop-blur-md flex items-start justify-center pt-20 px-4"
+            onClick={() => setIsSearchOpen(false)}
+          >
+            <motion.div 
+              initial={{ y: -20, scale: 0.95 }}
+              animate={{ y: 0, scale: 1 }}
+              exit={{ y: -20, scale: 0.95 }}
+              className="w-full max-w-2xl bg-white rounded-[32px] shadow-2xl overflow-hidden"
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="p-6 border-b border-slate-100 flex items-center gap-4">
+                <Search className="text-slate-400" size={24} />
+                <input 
+                  autoFocus
+                  type="text" 
+                  placeholder="Cerca tra le slide..." 
+                  className="flex-1 bg-transparent border-none outline-none text-lg font-medium text-slate-900 placeholder:text-slate-400"
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                />
+                <button 
+                  onClick={() => setIsSearchOpen(false)}
+                  className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-xl transition-all"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="max-h-[60vh] overflow-y-auto p-4 space-y-2 scrollbar-hide">
+                {filteredSteps.length > 0 ? (
+                  filteredSteps.map((step, idx) => {
+                    const realIdx = steps.findIndex(s => s.id === step.id);
+                    return (
+                      <button
+                        key={step.id}
+                        onClick={() => {
+                          setActiveModule(step.module as 'piano' | 'pos');
+                          setCurrentStep(realIdx);
+                          setIsSearchOpen(false);
+                          setSearchQuery('');
+                        }}
+                        className={cn(
+                          "w-full text-left p-4 rounded-2xl border transition-all flex items-center justify-between group",
+                          step.module === 'piano' 
+                            ? "border-slate-50 hover:border-emerald-200 hover:bg-emerald-50/50" 
+                            : "border-slate-50 hover:border-indigo-200 hover:bg-indigo-50/50"
+                        )}
+                      >
+                        <div className="flex items-center gap-4">
+                          <span className={cn(
+                            "text-xs font-black",
+                            step.module === 'piano' ? "text-emerald-600" : "text-indigo-600"
+                          )}>
+                            {(realIdx + 1).toString().padStart(2, '0')}
+                          </span>
+                          <span className="font-bold text-slate-700 group-hover:text-slate-900">{step.title}</span>
+                        </div>
+                        <span className={cn(
+                          "text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-full",
+                          step.module === 'piano' ? "bg-emerald-100 text-emerald-700" : "bg-indigo-100 text-indigo-700"
+                        )}>
+                          {step.module === 'piano' ? 'Piano Ed.' : 'Posizionamento'}
+                        </span>
+                      </button>
+                    );
+                  })
+                ) : searchQuery.trim() !== '' ? (
+                  <div className="p-12 text-center space-y-4">
+                    <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto text-slate-300">
+                      <Search size={32} />
+                    </div>
+                    <p className="text-slate-500 font-medium">Nessuna slide trovata per &quot;{searchQuery}&quot;</p>
+                  </div>
+                ) : (
+                  <div className="p-8 text-center text-slate-400 text-sm italic">
+                    Inizia a scrivere per cercare...
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Notes Sidebar */}
+      <div className="fixed right-6 bottom-32 z-40 flex flex-col items-end gap-4 pointer-events-none">
+        <AnimatePresence>
+          {steps[currentStep].id !== 'intro' && (
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              className="pointer-events-auto"
+            >
+              <div className="bg-white border border-slate-200 rounded-[32px] shadow-2xl w-80 overflow-hidden">
+                <div className="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+                  <h4 className="text-xs font-black uppercase tracking-widest text-slate-500 flex items-center gap-2">
+                    <Edit3 size={14} className="text-emerald-600" />
+                    Note Personali
+                  </h4>
+                  <span className="text-[10px] font-bold text-slate-400">Slide {currentStep + 1}</span>
+                </div>
+                <textarea 
+                  className="w-full h-40 p-4 text-sm text-slate-700 bg-transparent border-none outline-none resize-none placeholder:text-slate-300 placeholder:italic"
+                  placeholder="Scrivi qui i tuoi appunti per questa slide..."
+                  value={notes[steps[currentStep].id] || ''}
+                  onChange={e => updateNote(steps[currentStep].id, e.target.value)}
+                />
+                <div className="px-4 py-2 bg-slate-50/50 text-[9px] text-slate-400 italic border-t border-slate-100">
+                  Salvato automaticamente nel browser
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
