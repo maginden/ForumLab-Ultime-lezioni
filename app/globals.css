@@ -1,0 +1,12 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme {
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  @keyframes pulse-subtle {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.9; transform: scale(0.98); }
+  }
+  --animate-pulse-subtle: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
