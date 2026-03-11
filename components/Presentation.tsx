@@ -1261,9 +1261,15 @@ export default function Presentation() {
       {/* Navigation Header */}
       <nav className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-50">
         <div className="flex items-center gap-4">
-          <label className="relative group cursor-pointer">
-            <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
-            <div className="w-16 h-16 rounded-full border border-slate-100 flex items-center justify-center overflow-hidden bg-white group-hover:border-emerald-500 transition-all relative shadow-xl shadow-slate-200/60">
+          <div className="relative group">
+            <button 
+              onClick={() => {
+                setActiveModule('piano');
+                setCurrentStep(0);
+              }}
+              className="w-16 h-16 rounded-full border border-slate-100 flex items-center justify-center overflow-hidden bg-white hover:border-emerald-500 transition-all relative shadow-xl shadow-slate-200/60"
+              title="Torna all'Indice"
+            >
               {data.logoUrl ? (
                 <NextImage 
                   src={data.logoUrl} 
@@ -1273,13 +1279,14 @@ export default function Presentation() {
                   referrerPolicy="no-referrer"
                 />
               ) : (
-                <ImageIcon size={20} className="text-slate-400 group-hover:text-emerald-500" />
+                <ImageIcon size={20} className="text-slate-400" />
               )}
-            </div>
-            <div className="absolute -bottom-1 -right-1 bg-emerald-600 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10">
+            </button>
+            <label className="absolute -bottom-1 -right-1 bg-emerald-600 text-white p-1 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity z-10 shadow-lg">
+              <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
               <Edit3 size={10} />
-            </div>
-          </label>
+            </label>
+          </div>
           
           <button 
             onClick={() => {
@@ -1482,14 +1489,17 @@ export default function Presentation() {
                 />
                 
                 {/* Logo Link Overlay */}
-                <Link 
-                  href="/" 
+                <button 
+                  onClick={() => {
+                    setActiveModule('piano');
+                    setCurrentStep(0);
+                  }}
                   className="absolute top-0 left-0 w-[30%] h-full z-20 cursor-pointer"
-                  title="Torna alla Home"
+                  title="Torna all'Indice"
                 />
 
-                {/* Video, Infografica, Quiz Buttons moved to the top */}
-                <div className="absolute top-6 left-6 z-30 flex flex-wrap gap-2 max-w-[200px]">
+                {/* Video, Infografica, Quiz, Night Slides Buttons moved to the top */}
+                <div className="absolute top-6 left-6 z-30 flex flex-wrap gap-2 max-w-[300px]">
                   {data.videoUrl && (
                     <a 
                       href={data.videoUrl} 
@@ -1523,17 +1533,14 @@ export default function Presentation() {
                       Quiz
                     </a>
                   )}
-                </div>
-
-                <div className="absolute bottom-8 left-8 z-10">
                   <a 
-                    href="https://drive.google.com/file/d/1-ljZMlKob332DorY5wJBgySn2GLeyjaX/view?usp=sharing" 
+                    href="https://drive.google.com/file/d/1-ljZMlKob332DorY5wJBgySn2GLeyjaX/view?usp=drive_link" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-6 py-3 bg-slate-900/40 backdrop-blur-xl border border-white/20 rounded-2xl text-xs font-bold text-white hover:bg-slate-900/60 transition-all hover:scale-105 shadow-xl"
+                    className="flex items-center gap-2 px-3 py-1.5 bg-indigo-600/80 backdrop-blur-md border border-white/30 rounded-full text-[10px] font-bold text-white hover:bg-indigo-700 transition-all shadow-sm"
                   >
-                    <Moon size={16} className="text-indigo-400" />
-                    SLIDES per chi ama la notte
+                    <Moon size={12} className="text-indigo-200" />
+                    Slides Notte
                   </a>
                 </div>
               </div>
@@ -3479,7 +3486,7 @@ export default function Presentation() {
       {/* Notes Sidebar */}
       <div className="fixed right-6 bottom-32 z-40 flex flex-col items-end gap-4 pointer-events-none">
         <AnimatePresence>
-          {steps[currentStep].id !== 'intro' && (
+          {steps[currentStep].id !== 'intro' && steps[currentStep].module !== 'pos' && (
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
