@@ -39,6 +39,9 @@ import {
   Moon,
   Search,
   X,
+  Presentation as PresentationIcon,
+  Layers,
+  Split,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import NextImage from 'next/image';
@@ -62,6 +65,7 @@ interface LessonData {
   videoUrl?: string;
   infographicUrl?: string;
   quizUrl?: string;
+  claudeSlidesUrl?: string;
 }
 
 const steps = [
@@ -88,7 +92,15 @@ const steps = [
   { id: 'trends-keywords', title: 'Google Trends & Keyword Research', module: 'piano' },
   { id: 'exercise', title: 'Esercitazione', module: 'piano' },
   
-  // Modulo 2: Posizionamento
+  // Modulo 2: Organizzazione Aziendale
+  { id: 'org-intro', title: 'Organizzazione Aziendale', module: 'org' },
+  { id: 'org-struttura', title: 'Strutture Organizzative', module: 'org' },
+  { id: 'org-forme', title: 'Forme Organizzative (Dettaglio)', module: 'org' },
+  { id: 'org-organigramma', title: 'L\'Organigramma', module: 'org' },
+  { id: 'org-funzioni', title: 'Funzioni e Processi', module: 'org' },
+  { id: 'org-cultura', title: 'Cultura e Valori', module: 'org' },
+
+  // Modulo 3: Posizionamento
   { id: 'pos-intro', title: 'Posizionamento: Intro', module: 'pos' },
   { id: 'pos-segm', title: 'Segmentazione', module: 'pos' },
   { id: 'pos-target', title: 'Target Audience', module: 'pos' },
@@ -132,7 +144,8 @@ const INITIAL_DATA: LessonData = {
   logoUrl: "https://drive.google.com/uc?export=view&id=1PxU_d3N_FDouXPCRTy9HPOGPE0l4kOdI",
   videoUrl: "https://drive.google.com/file/d/1w-KVBVi-hb7qrX-M7cN9zk8HtfLNx3L_/view?usp=sharing",
   infographicUrl: "https://drive.google.com/file/d/1PUlnCGfJxfndwHYrQBtoJf26xUkCIeuA/view?usp=sharing",
-  quizUrl: "https://notebooklm.google.com/notebook/b586f8c6-f924-4b4b-a552-81abdcc41d3d?artifactId=50f0331f-9ca3-4894-b052-187506fae9e4"
+  quizUrl: "https://notebooklm.google.com/notebook/b586f8c6-f924-4b4b-a552-81abdcc41d3d?artifactId=50f0331f-9ca3-4894-b052-187506fae9e4",
+  claudeSlidesUrl: "https://claude.ai/public/artifacts/46019f78-850b-4c40-b8b1-4068b14ecc74"
 };
 
 // --- Components ---
@@ -145,7 +158,7 @@ const PositioningModule = ({ currentStepId }: { currentStepId: string }) => {
       {currentStepId === 'pos-intro' && (
         <motion.div key="pos-intro" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-12 py-10">
           <div className="text-center space-y-4 max-w-3xl mx-auto">
-            <div className="inline-block px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-[10px] font-bold uppercase tracking-wider">Modulo 2</div>
+            <div className="inline-block px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-[10px] font-bold uppercase tracking-wider">Modulo 3</div>
             <h2 className="text-4xl md:text-6xl font-display font-medium text-slate-900">Il Posizionamento di Marketing</h2>
             <p className="text-slate-500 text-xl italic">&quot;Se non sei una marca, sei una merce.&quot; — Philip Kotler</p>
           </div>
@@ -611,6 +624,296 @@ const PositioningModule = ({ currentStepId }: { currentStepId: string }) => {
     </AnimatePresence>
   );
 };
+
+const OrganizationModule = ({ currentStepId }: { currentStepId: string }) => {
+  return (
+    <AnimatePresence mode="wait">
+      {currentStepId === 'org-intro' && (
+        <motion.div key="org-intro" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-12 py-10">
+          <div className="text-center space-y-4 max-w-3xl mx-auto">
+            <div className="inline-block px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-[10px] font-bold uppercase tracking-wider">Modulo 2</div>
+            <h2 className="text-4xl md:text-6xl font-display font-medium text-slate-900">Cenni di Organizzazione Aziendale</h2>
+            <p className="text-slate-500 text-xl italic">&quot;L&apos;organizzazione non è un fine, ma un mezzo per rendere produttive le risorse umane.&quot; — Peter Drucker</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-white p-8 rounded-[32px] border border-slate-100 shadow-sm space-y-6">
+              <h3 className="text-2xl font-bold flex items-center gap-3"><Users className="text-emerald-600" /> Cos&apos;è l&apos;Organizzazione?</h3>
+              <ul className="space-y-4 text-slate-600">
+                <li className="flex gap-3"><CheckCircle2 className="text-emerald-500 shrink-0" size={20} /> Coordinamento di persone e risorse.</li>
+                <li className="flex gap-3"><CheckCircle2 className="text-emerald-500 shrink-0" size={20} /> Definizione di ruoli, compiti e responsabilità.</li>
+                <li className="flex gap-3"><CheckCircle2 className="text-emerald-500 shrink-0" size={20} /> Creazione di valore attraverso processi efficienti.</li>
+              </ul>
+            </div>
+            <div className="bg-emerald-900 rounded-[32px] p-8 text-white flex flex-col justify-center space-y-4">
+              <h4 className="text-xl font-bold text-emerald-300">Perché è importante?</h4>
+              <p className="text-emerald-100 leading-relaxed">Senza un&apos;organizzazione chiara, anche la migliore strategia di marketing fallisce nell&apos;esecuzione. L&apos;azienda deve funzionare come un organismo sincronizzato.</p>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      {currentStepId === 'org-struttura' && (
+        <motion.div key="org-struttura" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-10 py-10">
+          <div className="flex items-center gap-4 border-b border-slate-100 pb-6">
+            <div className="w-12 h-12 bg-emerald-600 rounded-2xl flex items-center justify-center text-white"><Layout size={24} /></div>
+            <h2 className="text-3xl md:text-4xl font-display font-medium">Le Strutture Organizzative</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { t: "Funzionale", d: "Suddivisa per aree di competenza (Marketing, Produzione, HR). Semplice e chiara.", icon: Target },
+              { t: "Divisionale", d: "Suddivisa per prodotti, mercati o clienti. Autonoma e flessibile.", icon: ShoppingBag },
+              { t: "A Matrice", d: "Incrocio tra funzioni e progetti. Massima collaborazione, ma complessa.", icon: Activity }
+            ].map((item, i) => (
+              <div key={i} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-3">
+                <item.icon className="text-emerald-500" size={24} />
+                <h4 className="font-bold text-slate-900">{item.t}</h4>
+                <p className="text-xs text-slate-500 leading-relaxed">{item.d}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      )}
+
+      {currentStepId === 'org-forme' && (
+        <motion.div key="org-forme" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-8 py-6">
+          <div className="flex items-center gap-4 border-b border-slate-100 pb-6">
+            <div className="w-12 h-12 bg-emerald-600 rounded-2xl flex items-center justify-center text-white"><Layers size={24} /></div>
+            <div className="space-y-1">
+              <h2 className="text-3xl font-display font-medium">Le 4 Forme Organizzative</h2>
+              <p className="text-sm text-slate-500 italic">Scegliere come organizzare la squadra: ogni modello ha un vantaggio e un problema.</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* 1. FUNZIONALE */}
+            <div className="bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm space-y-4 hover:border-emerald-200 transition-colors">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-blue-50 text-blue-600 rounded-xl"><Target size={20} /></div>
+                  <h3 className="font-bold text-lg">1. Funzionale</h3>
+                </div>
+                <span className="text-[10px] font-bold px-2 py-0.5 bg-blue-50 text-blue-700 rounded-full uppercase">Per Competenze</span>
+              </div>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Le persone che fanno la stessa cosa stanno insieme (Marketing, Finanza, Produzione).
+              </p>
+              <div className="bg-slate-50 p-3 rounded-2xl space-y-2">
+                <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  <MapPin size={10} /> Esempio: Apple o McDonald&apos;s
+                </div>
+                <p className="text-[11px] text-slate-500 italic">&quot;Tutti i professori di economia nello stesso dipartimento.&quot;</p>
+              </div>
+              <div className="grid grid-cols-2 gap-3 pt-2">
+                <div className="p-3 bg-emerald-50 rounded-2xl border border-emerald-100">
+                  <div className="text-[9px] font-black text-emerald-600 uppercase mb-1">Vantaggio</div>
+                  <div className="text-[10px] font-bold text-emerald-800">Super Specializzazione</div>
+                </div>
+                <div className="p-3 bg-red-50 rounded-2xl border border-red-100">
+                  <div className="text-[9px] font-black text-red-600 uppercase mb-1">Problema</div>
+                  <div className="text-[10px] font-bold text-red-800">Silos (Non comunicano)</div>
+                </div>
+              </div>
+            </div>
+
+            {/* 2. DIVISIONALE */}
+            <div className="bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm space-y-4 hover:border-emerald-200 transition-colors">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-orange-50 text-orange-600 rounded-xl"><Split size={20} /></div>
+                  <h3 className="font-bold text-lg">2. Divisionale</h3>
+                </div>
+                <span className="text-[10px] font-bold px-2 py-0.5 bg-orange-50 text-orange-700 rounded-full uppercase">Per Prodotto/Mercato</span>
+              </div>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                L&apos;azienda si divide per prodotto (Smartphone, TV) o mercato (Europa, Asia).
+              </p>
+              <div className="bg-slate-50 p-3 rounded-2xl space-y-2">
+                <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  <MapPin size={10} /> Esempio: Samsung o IKEA
+                </div>
+                <p className="text-[11px] text-slate-500 italic">&quot;Ogni divisione funziona come un&apos;azienda a sé.&quot;</p>
+              </div>
+              <div className="grid grid-cols-2 gap-3 pt-2">
+                <div className="p-3 bg-emerald-50 rounded-2xl border border-emerald-100">
+                  <div className="text-[9px] font-black text-emerald-600 uppercase mb-1">Vantaggio</div>
+                  <div className="text-[10px] font-bold text-emerald-800">Focus sul Cliente</div>
+                </div>
+                <div className="p-3 bg-red-50 rounded-2xl border border-red-100">
+                  <div className="text-[9px] font-black text-red-600 uppercase mb-1">Problema</div>
+                  <div className="text-[10px] font-bold text-red-800">Spreco di Risorse</div>
+                </div>
+              </div>
+            </div>
+
+            {/* 3. A MATRICE */}
+            <div className="bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm space-y-4 hover:border-emerald-200 transition-colors">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-purple-50 text-purple-600 rounded-xl"><Activity size={20} /></div>
+                  <h3 className="font-bold text-lg">3. A Matrice</h3>
+                </div>
+                <span className="text-[10px] font-bold px-2 py-0.5 bg-purple-50 text-purple-700 rounded-full uppercase">Due Capi</span>
+              </div>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Incrocio tra funzioni e progetti. Una persona risponde a due capi contemporaneamente.
+              </p>
+              <div className="bg-slate-50 p-3 rounded-2xl space-y-2">
+                <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  <MapPin size={10} /> Esempio: Philips o Google
+                </div>
+                <p className="text-[11px] text-slate-500 italic">&quot;A chi devo dire di sì per primo?&quot;</p>
+              </div>
+              <div className="grid grid-cols-2 gap-3 pt-2">
+                <div className="p-3 bg-emerald-50 rounded-2xl border border-emerald-100">
+                  <div className="text-[9px] font-black text-emerald-600 uppercase mb-1">Vantaggio</div>
+                  <div className="text-[10px] font-bold text-emerald-800">Massima Flessibilità</div>
+                </div>
+                <div className="p-3 bg-red-50 rounded-2xl border border-red-100">
+                  <div className="text-[9px] font-black text-red-600 uppercase mb-1">Problema</div>
+                  <div className="text-[10px] font-bold text-red-800">Confusione Decisionale</div>
+                </div>
+              </div>
+            </div>
+
+            {/* 4. AGILE */}
+            <div className="bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm space-y-4 hover:border-emerald-200 transition-colors">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-emerald-50 text-emerald-600 rounded-xl"><Zap size={20} /></div>
+                  <h3 className="font-bold text-lg">4. Agile</h3>
+                </div>
+                <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded-full uppercase">Piccoli Team</span>
+              </div>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Team piccoli, autonomi e multidisciplinari (Squads) che decidono velocemente.
+              </p>
+              <div className="bg-slate-50 p-3 rounded-2xl space-y-2">
+                <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  <MapPin size={10} /> Esempio: Spotify o Netflix
+                </div>
+                <p className="text-[11px] text-slate-500 italic">&quot;Tante piccole startup dentro l&apos;azienda.&quot;</p>
+              </div>
+              <div className="grid grid-cols-2 gap-3 pt-2">
+                <div className="p-3 bg-emerald-50 rounded-2xl border border-emerald-100">
+                  <div className="text-[9px] font-black text-emerald-600 uppercase mb-1">Vantaggio</div>
+                  <div className="text-[10px] font-bold text-emerald-800">Decisioni Rapidissime</div>
+                </div>
+                <div className="p-3 bg-red-50 rounded-2xl border border-red-100">
+                  <div className="text-[9px] font-black text-red-600 uppercase mb-1">Problema</div>
+                  <div className="text-[10px] font-bold text-red-800">Caos se l&apos;azienda cresce</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-6 bg-emerald-900 rounded-[32px] text-white text-center">
+            <p className="text-sm font-medium italic">
+              &quot;Ogni azienda deve trovare il suo equilibrio: troppa gerarchia porta lentezza, troppa libertà porta caos.&quot;
+            </p>
+          </div>
+        </motion.div>
+      )}
+
+      {currentStepId === 'org-organigramma' && (
+        <motion.div key="org-organigramma" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-10 py-10">
+          <div className="flex items-center gap-4 border-b border-slate-100 pb-6">
+            <div className="w-12 h-12 bg-emerald-600 rounded-2xl flex items-center justify-center text-white"><ListChecks size={24} /></div>
+            <h2 className="text-3xl md:text-4xl font-display font-medium">L&apos;Organigramma</h2>
+          </div>
+          <div className="bg-slate-50 p-10 rounded-[40px] border border-slate-200 flex flex-col items-center space-y-8">
+            <div className="w-48 p-4 bg-emerald-600 text-white rounded-xl text-center font-bold shadow-lg">Direzione Generale</div>
+            <div className="w-1 h-8 bg-slate-300" />
+            <div className="grid grid-cols-3 gap-8 w-full">
+              <div className="flex flex-col items-center">
+                <div className="w-full p-3 bg-white border border-emerald-200 rounded-xl text-center text-sm font-bold text-emerald-700 shadow-sm">Marketing</div>
+                <div className="w-px h-6 bg-slate-300" />
+                <div className="w-3/4 p-2 bg-slate-100 rounded-lg text-center text-[10px] text-slate-500">Social Media</div>
+              </div>
+              <div className="flex flex-col items-center">
+                <div className="w-full p-3 bg-white border border-emerald-200 rounded-xl text-center text-sm font-bold text-emerald-700 shadow-sm">Produzione</div>
+                <div className="w-px h-6 bg-slate-300" />
+                <div className="w-3/4 p-2 bg-slate-100 rounded-lg text-center text-[10px] text-slate-500">Logistica</div>
+              </div>
+              <div className="flex flex-col items-center">
+                <div className="w-full p-3 bg-white border border-emerald-200 rounded-xl text-center text-sm font-bold text-emerald-700 shadow-sm">Amministrazione</div>
+                <div className="w-px h-6 bg-slate-300" />
+                <div className="w-3/4 p-2 bg-slate-100 rounded-lg text-center text-[10px] text-slate-500">Contabilità</div>
+              </div>
+            </div>
+          </div>
+          <p className="text-center text-slate-500 text-sm italic">L&apos;organigramma rende visibile l&apos;invisibile: la gerarchia e i flussi di comunicazione.</p>
+        </motion.div>
+      )}
+
+      {currentStepId === 'org-funzioni' && (
+        <motion.div key="org-funzioni" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-10 py-10">
+          <div className="flex items-center gap-4 border-b border-slate-100 pb-6">
+            <div className="w-12 h-12 bg-emerald-600 rounded-2xl flex items-center justify-center text-white"><Zap size={24} /></div>
+            <h2 className="text-3xl md:text-4xl font-display font-medium">Funzioni e Processi</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-4">
+              <h3 className="text-xl font-bold text-slate-800">Le Funzioni (Verticali)</h3>
+              <p className="text-sm text-slate-500">Raggruppano competenze simili. Sono i &quot;silos&quot; specialistici dell&apos;azienda.</p>
+              <div className="space-y-2">
+                {["Ricerca e Sviluppo", "Marketing e Vendite", "Operations", "Risorse Umane"].map((f, i) => (
+                  <div key={i} className="p-3 bg-white border border-slate-100 rounded-xl text-sm font-medium flex items-center gap-3">
+                    <div className="w-2 h-2 bg-emerald-400 rounded-full" /> {f}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="space-y-4">
+              <h3 className="text-xl font-bold text-slate-800">I Processi (Orizzontali)</h3>
+              <p className="text-sm text-slate-500">Attraversano le funzioni per consegnare valore al cliente finale.</p>
+              <div className="p-6 bg-emerald-50 rounded-3xl border border-emerald-100 space-y-4">
+                <div className="flex items-center justify-between text-[10px] font-bold text-emerald-600 uppercase tracking-widest">
+                  <span>Input</span>
+                  <span>Valore</span>
+                  <span>Output</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 h-10 bg-white rounded-lg border border-emerald-200 flex items-center justify-center text-xs font-bold">Ordine</div>
+                  <ChevronRight className="text-emerald-300" />
+                  <div className="flex-1 h-10 bg-emerald-600 rounded-lg flex items-center justify-center text-xs font-bold text-white">Produzione</div>
+                  <ChevronRight className="text-emerald-300" />
+                  <div className="flex-1 h-10 bg-white rounded-lg border border-emerald-200 flex items-center justify-center text-xs font-bold">Consegna</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      {currentStepId === 'org-cultura' && (
+        <motion.div key="org-cultura" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="space-y-12 py-10">
+          <div className="text-center space-y-4 max-w-2xl mx-auto">
+            <h2 className="text-4xl font-display font-medium">Cultura e Valori</h2>
+            <p className="text-slate-500">Il &quot;collante&quot; che tiene insieme l&apos;organizzazione.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center space-y-4">
+              <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto text-emerald-600"><Eye size={32} /></div>
+              <h3 className="text-xl font-bold">Vision</h3>
+              <p className="text-sm text-slate-500 leading-relaxed">Dove vogliamo andare nel lungo termine. Il sogno dell&apos;azienda.</p>
+            </div>
+            <div className="text-center space-y-4">
+              <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto text-emerald-600"><Target size={32} /></div>
+              <h3 className="text-xl font-bold">Mission</h3>
+              <p className="text-sm text-slate-500 leading-relaxed">Cosa facciamo ogni giorno per chi. Lo scopo pratico.</p>
+            </div>
+            <div className="text-center space-y-4">
+              <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto text-emerald-600"><Star size={32} /></div>
+              <h3 className="text-xl font-bold">Valori</h3>
+              <p className="text-sm text-slate-500 leading-relaxed">I principi non negoziabili che guidano i comportamenti.</p>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
 const PersonaTemplate = () => {
   const [persona] = useState({
     name: "Nome Persona",
@@ -792,21 +1095,9 @@ const EditableText = ({
 
 export default function Presentation() {
   const [currentStep, setCurrentStep] = useState(0);
-  const [activeModule, setActiveModule] = useState<'piano' | 'pos'>('piano');
+  const [activeModule, setActiveModule] = useState<'piano' | 'pos' | 'org'>('piano');
   const [isEditing, setIsEditing] = useState(false);
   const [data, setData] = useState<LessonData>(INITIAL_DATA);
-  const [notes, setNotes] = useState<Record<string, string>>({});
-
-  React.useEffect(() => {
-    const savedNotes = localStorage.getItem('lesson-notes');
-    if (savedNotes) setNotes(JSON.parse(savedNotes));
-  }, []);
-
-  const updateNote = (stepId: string, value: string) => {
-    const newNotes = { ...notes, [stepId]: value };
-    setNotes(newNotes);
-    localStorage.setItem('lesson-notes', JSON.stringify(newNotes));
-  };
   const [isExporting, setIsExporting] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -1466,6 +1757,8 @@ export default function Presentation() {
       <main className={cn("flex-1 max-w-6xl mx-auto w-full p-6 md:p-10", isExporting && "export-mode")} ref={slideRef}>
         {steps[currentStep].module === 'pos' ? (
           <PositioningModule currentStepId={steps[currentStep].id} />
+        ) : steps[currentStep].module === 'org' ? (
+          <OrganizationModule currentStepId={steps[currentStep].id} />
         ) : (
           <AnimatePresence mode="wait">
             {/* Main Slide Content */}
@@ -1522,15 +1815,15 @@ export default function Presentation() {
                       Infografica
                     </a>
                   )}
-                  {data.quizUrl && (
+                  {data.claudeSlidesUrl && (
                     <a 
-                      href={data.quizUrl} 
+                      href={data.claudeSlidesUrl} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 px-3 py-1.5 bg-white/60 backdrop-blur-md border border-white/30 rounded-full text-[10px] font-bold text-slate-900 hover:bg-white/80 transition-all shadow-sm"
                     >
-                      <HelpCircle size={12} className="text-blue-600" />
-                      Quiz
+                      <PresentationIcon size={12} className="text-blue-600" />
+                      Slides
                     </a>
                   )}
                   <a 
@@ -1623,6 +1916,10 @@ export default function Presentation() {
                       <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
                       Piano Ed.
                     </span>
+                    <span className="flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                      <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
+                      Org. Aziendale
+                    </span>
                     <span className="flex items-center gap-1.5 px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-[10px] font-bold uppercase tracking-wider">
                       <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full" />
                       Posizionamento
@@ -1635,20 +1932,22 @@ export default function Presentation() {
                     <button
                       key={step.id}
                       onClick={() => {
-                        setActiveModule(step.module as 'piano' | 'pos');
+                        setActiveModule(step.module as 'piano' | 'pos' | 'org');
                         setCurrentStep(idx);
                       }}
                       className={cn(
                         "text-left p-4 rounded-2xl border transition-all group relative overflow-hidden",
                         step.module === 'piano' 
                           ? "border-slate-100 hover:border-emerald-200 hover:bg-emerald-50/50" 
-                          : "border-slate-100 hover:border-indigo-200 hover:bg-indigo-50/50"
+                          : step.module === 'pos'
+                            ? "border-slate-100 hover:border-indigo-200 hover:bg-indigo-50/50"
+                            : "border-slate-100 hover:border-emerald-200 hover:bg-emerald-50/50"
                       )}
                     >
                       <div className="flex items-start gap-3 relative z-10">
                         <span className={cn(
                           "text-xs font-black shrink-0 mt-0.5",
-                          step.module === 'piano' ? "text-emerald-600" : "text-indigo-600"
+                          step.module === 'piano' ? "text-emerald-600" : step.module === 'pos' ? "text-indigo-600" : "text-emerald-600"
                         )}>
                           {(idx + 1).toString().padStart(2, '0')}
                         </span>
@@ -1658,9 +1957,9 @@ export default function Presentation() {
                           </span>
                           <span className={cn(
                             "text-[8px] font-black uppercase tracking-[0.15em] block",
-                            step.module === 'piano' ? "text-emerald-400" : "text-indigo-400"
+                            step.module === 'piano' ? "text-emerald-400" : step.module === 'pos' ? "text-indigo-400" : "text-emerald-400"
                           )}>
-                            {step.module === 'piano' ? 'Piano Ed.' : 'Posizionamento'}
+                            {step.module === 'piano' ? 'Piano Ed.' : step.module === 'pos' ? 'Posizionamento' : 'Org. Aziendale'}
                           </span>
                         </div>
                       </div>
@@ -1668,7 +1967,7 @@ export default function Presentation() {
                       {/* Hover Indicator */}
                       <div className={cn(
                         "absolute bottom-0 left-0 h-1 w-0 group-hover:w-full transition-all duration-300",
-                        step.module === 'piano' ? "bg-emerald-500" : "bg-indigo-500"
+                        step.module === 'piano' ? "bg-emerald-500" : step.module === 'pos' ? "bg-indigo-500" : "bg-emerald-500"
                       )} />
                     </button>
                   ))}
@@ -3483,38 +3782,6 @@ export default function Presentation() {
         )}
       </AnimatePresence>
 
-      {/* Notes Sidebar */}
-      <div className="fixed right-6 bottom-32 z-40 flex flex-col items-end gap-4 pointer-events-none">
-        <AnimatePresence>
-          {steps[currentStep].id !== 'intro' && steps[currentStep].module !== 'pos' && (
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              className="pointer-events-auto"
-            >
-              <div className="bg-white border border-slate-200 rounded-[32px] shadow-2xl w-80 overflow-hidden">
-                <div className="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
-                  <h4 className="text-xs font-black uppercase tracking-widest text-slate-500 flex items-center gap-2">
-                    <Edit3 size={14} className="text-emerald-600" />
-                    Note Personali
-                  </h4>
-                  <span className="text-[10px] font-bold text-slate-400">Slide {currentStep + 1}</span>
-                </div>
-                <textarea 
-                  className="w-full h-40 p-4 text-sm text-slate-700 bg-transparent border-none outline-none resize-none placeholder:text-slate-300 placeholder:italic"
-                  placeholder="Scrivi qui i tuoi appunti per questa slide..."
-                  value={notes[steps[currentStep].id] || ''}
-                  onChange={e => updateNote(steps[currentStep].id, e.target.value)}
-                />
-                <div className="px-4 py-2 bg-slate-50/50 text-[9px] text-slate-400 italic border-t border-slate-100">
-                  Salvato automaticamente nel browser
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
     </div>
   );
 }
